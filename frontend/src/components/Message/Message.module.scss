@@ -1,0 +1,15 @@
+.message {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: fit-content;
+    padding: 0.6em;
+    font-size: 14px;
+    margin-top: 10px;
+    border-radius: 7px;
+
+    .sender {
+        color: #5FE165;
+        font-weight: 500;
+    }
+}
