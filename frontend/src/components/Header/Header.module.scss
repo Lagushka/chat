@@ -4,11 +4,11 @@
     height: 70px;
     justify-content: center;
     align-items: center;
-    background-color: #06283D;
+    background-color: var(--secondaryColor);
     width: 100vw;
   
     .projectName {
-      color: #DFF6FF;
+      color: var(--mainColor);
       font-size: 25px;
     }
 }

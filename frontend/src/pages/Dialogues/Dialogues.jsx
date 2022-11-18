@@ -50,7 +50,7 @@ export const Dialogues = () => {
               <DialogueCard
                 key={chat.id}
                 name={chat.name ? chat.name : 'Chat'}
-                lastMessage={chat.messages.length > 0 ? `${chat.messages[chat.messages.length - 1].sender.name}: ${chat.messages[chat.messages.length - 1].text}` : 'There are no messages yet'}
+                message={chat.messages.length > 0 && chat.messages[chat.messages.length - 1]}
               />
             ))}
           </div>

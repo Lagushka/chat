@@ -6,13 +6,33 @@
   padding: 7px;
   overflow: hidden;
   background-color: inherit;
-  box-sizing: border-box;
 
   &:hover {
     background-color: #A8DEF4;
   }
 
-  .chatName {
-    font-weight: 500;
+  .chatInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .time {
+      font-size: 14px;
+      color: #25358C;
+    }
+
+    .chatName {
+      font-weight: 500;
+    }
+  }
+
+  .lastMessage {
+    display: flex;
+    flex-direction: row;
+
+    .sender {
+      color: #25358C;
+      margin-right: 5px;
+    }
   }
 }

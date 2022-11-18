@@ -11,11 +11,13 @@ const io = require('socket.io')(httpServer, {
   },
 });
 
-const chat = [{
-  id: 0,
-  messages: [],
-  users: [],
-}];
+const chat = [
+  {
+    id: 0,
+    messages: [],
+    users: [],
+  }
+];
 
 const users = [];
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import './style.scss';
+import './design/base.scss';
 
 import { AppRouter } from './pages/routes';
 

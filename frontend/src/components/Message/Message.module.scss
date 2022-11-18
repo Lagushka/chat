@@ -1,11 +1,11 @@
 .message {
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
+    position: relative;
     background-color: #C6EFFF;
     width: fit-content;
     max-width: 100%;
-    padding: 0.6em;
+    padding: 7px 25px 23px 7px;
     height: fit-content;
     font-size: 14px;
     margin-top: 10px;
@@ -16,10 +16,18 @@
         font-weight: 500;
     }
 
+    .time {
+        position: absolute;
+        bottom: 7px;
+        right: 7px;
+        font-size: 12px;
+        color: #12769D;
+    }
+
     .text {
         word-wrap: break-word;
         display: block;
-        color: #06283D;
+        color: var(--secondaryColor);
         line-height: 1.5em;
     }
 }

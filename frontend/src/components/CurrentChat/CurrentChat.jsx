@@ -17,21 +17,33 @@ export const CurrentChat = ({ chat }) => {
 
   const user = JSON.parse(localStorage.getItem('user'));
 
-  function newMessage(newId, newText, newSender, chatId) {
-    return {
-      id: newId,
-      text: newText,
-      sender: newSender,
-      chatId,
-    };
-  }
-
   const handleSubmit = (event) => {
     if (event) {
       event.preventDefault();
     }
     if (fieldValue) {
-      socket.emit('message', { message: newMessage(chat.messages.length, fieldValue, user), chatId: chat.id });
+      const now = new Date();
+      const period = {
+        date: {
+          year: now.getFullYear(),
+          month: now.getMonth(),
+          day: now.getDate(),
+        },
+        time: {
+          hour: now.getHours(),
+          minute: now.getMinutes(),
+          second: now.getSeconds(),
+        },
+      };
+      socket.emit('message', {
+        message: {
+          id: chat.messages.length,
+          text: fieldValue,
+          sender: user,
+          period,
+        },
+        chatId: chat.id,
+      });
       setFieldValue('');
     }
   };

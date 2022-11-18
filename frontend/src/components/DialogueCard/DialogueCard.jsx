@@ -1,16 +1,23 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import classes from './DialogueCard.module.scss';
 
-export const DialogueCard = ({ name, lastMessage }) => (
+export const DialogueCard = ({ name, message }) => (
   <div className={classes.card}>
-    <span className={classes.chatName}>{name}</span>
-    <span className={classes.lastMessage}>{lastMessage}</span>
+    <div className={classes.chatInfo}>
+      <span className={classes.chatName}>{name}</span>
+      <span className={classes.time}>{`${message.period.time.hour}:${message.period.time.minute}`}</span>
+    </div>
+    {
+      message
+        ? (
+          <div className={classes.lastMessage}>
+            <span className={classes.sender}>{`${message.sender.name}:`}</span>
+            <span className={classes.text}>{message.text}</span>
+          </div>
+        )
+        : <span>No messages</span>
+    }
   </div>
 );
-
-DialogueCard.propTypes = {
-  name: PropTypes.string.isRequired,
-  lastMessage: PropTypes.string.isRequired,
-};

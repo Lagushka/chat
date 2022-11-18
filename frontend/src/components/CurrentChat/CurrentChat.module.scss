@@ -1,14 +1,13 @@
+@use "../../design/variables" as *;  
+
 .currentChat {
-    box-sizing: border-box;
-    background-color: #DFF6FF;
+    background-color: var(--mainColor);
     height: 100%;
     width: 100%;
 
     .messages {
-        box-sizing: border-box;
         padding: 0px 0 50px 30px;
         height: calc(100vh - 70px - 50px);
-        box-sizing: border-box;
         padding-bottom: 10px;
         overflow: scroll;
         overflow-x: hidden;
@@ -32,7 +31,7 @@
     }
 
     .newMessageForm {
-        background-color: #06283D;
+        background-color: var(--secondaryColor);
         bottom: 0;
         height: 50px;
         bottom: 0;
@@ -43,14 +42,13 @@
 
         .messageInput {
             height: 100%;
-            box-sizing: border-box;
             width: 90%;
             font-family: inherit;
             resize: none;
             background-color: inherit;
             border: none;
             outline: none;
-            color: #DFF6FF;
+            color: var(--mainColor);
             padding: 5px 10px 5px 10px;
             line-height: 1.2em;
             font-size: 13px;

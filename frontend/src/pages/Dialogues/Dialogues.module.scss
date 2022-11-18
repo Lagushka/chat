@@ -1,17 +1,14 @@
 .dialogues {
-    box-sizing: border-box;
     width: inherit;
 }
 
 .chats {
     height: calc(100vh - 70px);
-    box-sizing: inherit;
     display: grid;
     grid-template-columns: minmax(20%, 300px) auto;
 
     .chatList {
         display: flex;
-        box-sizing: border-box;
         flex-direction: column;
         background-color: #C6EFFF;
 
