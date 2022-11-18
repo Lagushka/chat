@@ -3,7 +3,7 @@ import React from 'react';
 import { useRoutes } from 'react-router-dom';
 
 import { StartPage } from './StartPage/StartPage';
-import { CurrentChat } from './CurrentChat/CurrentChat';
+import { Dialogues } from './Dialogues/Dialogues';
 
 const routes = [
   {
@@ -11,8 +11,8 @@ const routes = [
     element: <StartPage />,
   },
   {
-    path: '/chat',
-    element: <CurrentChat />,
+    path: '/dialogues',
+    element: <Dialogues />,
   },
 ];
 

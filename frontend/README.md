@@ -9,7 +9,7 @@
     npm i
     ```
 3.  ```bash 
-    node index.js
+    npm start
     ```
 
 ## Frontend

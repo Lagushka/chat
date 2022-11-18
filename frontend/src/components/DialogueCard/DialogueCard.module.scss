@@ -1,0 +1,18 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 60px;
+  padding: 7px;
+  overflow: hidden;
+  background-color: inherit;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: #A8DEF4;
+  }
+
+  .chatName {
+    font-weight: 500;
+  }
+}

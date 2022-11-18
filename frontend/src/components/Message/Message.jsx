@@ -5,7 +5,7 @@ import classes from './Message.module.scss';
 export default function Message({ message }) {
   return (
     <div className={classes.message}>
-      <span className={classes.sender}>{message.sender}</span>
+      <span className={classes.sender}>{message.sender.name}</span>
       <span className={classes.text}>{message.text}</span>
     </div>
   );
@@ -13,7 +13,9 @@ export default function Message({ message }) {
 
 Message.propTypes = {
   message: PropTypes.shape({
-    sender: PropTypes.string.isRequired,
+    sender: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }).isRequired,
     text: PropTypes.string,
   }).isRequired,
 };

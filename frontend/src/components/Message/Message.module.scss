@@ -1,16 +1,25 @@
 .message {
     display: flex;
     flex-direction: column;
-    background-color: white;
+    box-sizing: border-box;
+    background-color: #C6EFFF;
     width: fit-content;
+    max-width: 100%;
     padding: 0.6em;
+    height: fit-content;
     font-size: 14px;
     margin-top: 10px;
     border-radius: 7px;
-    color: #06283D;
 
     .sender {
-        color: #5FE165;
+        color: #771DDB;
         font-weight: 500;
+    }
+
+    .text {
+        word-wrap: break-word;
+        display: block;
+        color: #06283D;
+        line-height: 1.5em;
     }
 }

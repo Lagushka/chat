@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classes from './StartPage.module.scss';
+import { socket } from '../../socket';
 
 export const StartPage = () => {
   const [fieldValue, setFieldValue] = useState('');
@@ -12,8 +13,14 @@ export const StartPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    localStorage.setItem('username', fieldValue);
-    navigate('/chat');
+    if (fieldValue) {
+      const user = {
+        name: fieldValue,
+      };
+      localStorage.setItem('user', JSON.stringify(user));
+      socket.emit('user', user);
+      navigate('/dialogues');
+    }
   };
 
   return (
