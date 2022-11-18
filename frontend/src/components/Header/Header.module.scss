@@ -1,0 +1,14 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    height: 70px;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--secondaryColor);
+    width: 100vw;
+  
+    .projectName {
+      color: var(--mainColor);
+      font-size: 25px;
+    }
+}
