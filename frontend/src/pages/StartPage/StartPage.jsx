@@ -19,7 +19,7 @@ export const StartPage = () => {
       };
       localStorage.setItem('user', JSON.stringify(user));
       socket.emit('user', user);
-      navigate('/dialogues');
+      navigate('/chat/dialogues');
     }
   };
 
