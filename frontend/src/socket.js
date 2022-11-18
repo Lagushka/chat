@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-export const IPADDRESS = 'http://95.31.187.45';
+export const IPADDRESS = 'https://95.31.187.45';
 export const PORT = '4001';
 
 export const socket = io(`${IPADDRESS}:${PORT}`);
