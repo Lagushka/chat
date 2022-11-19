@@ -7,7 +7,7 @@ export const DialogueCard = ({ name, message }) => (
   <div className={classes.card}>
     <div className={classes.chatInfo}>
       <span className={classes.chatName}>{name}</span>
-      <span className={classes.time}>{`${message.period.time.hour}:${message.period.time.minute}`}</span>
+      { message && <span className={classes.time}>{`${message.period.time.hour}:${message.period.time.minute}`}</span> }
     </div>
     {
       message

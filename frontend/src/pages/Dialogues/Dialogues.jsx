@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import { CurrentChat } from '../../components/CurrentChat/CurrentChat';
-import { socket, IPADDRESS, PORT } from '../../socket';
+import { socket, IPADDRESS } from '../../socket';
 import classes from './Dialogues.module.scss';
 import Header from '../../components/Header/Header';
 import { DialogueCard } from '../../components/DialogueCard/DialogueCard';
@@ -11,7 +11,7 @@ export const Dialogues = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get(`https://${IPADDRESS}:${PORT}`)
+    axios.get(`${IPADDRESS}`)
       .then((response) => {
         setData([...response.data]);
       }).catch((error) => {
