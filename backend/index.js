@@ -15,6 +15,7 @@ const io = require('socket.io')(httpsServer, {
     origin: '*',
     methods: ['GET', 'POST'],
   },
+  secure: true,
 });
 
 const chat = [
@@ -36,6 +37,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.get('/', (_, res) => {
+  console.log('connected to server');
   res.json(chat);
 });
 
@@ -67,6 +69,6 @@ io.on('connection', (socket) => {
   });
 });
 
-httpsServer.listen(4001, '192.168.1.79', () => {
+httpsServer.listen(4001, () => {
   console.log('listening');
 });

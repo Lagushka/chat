@@ -11,7 +11,7 @@ export const Dialogues = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get(`${IPADDRESS}:${PORT}`)
+    axios.get(`https://${IPADDRESS}:${PORT}`)
       .then((response) => {
         setData([...response.data]);
       }).catch((error) => {
