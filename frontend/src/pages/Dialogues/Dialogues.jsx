@@ -6,10 +6,12 @@ import { socket, IPADDRESS, PORT } from '../../socket';
 import classes from './Dialogues.module.scss';
 import Header from '../../components/Header/Header';
 import { DialogueCard } from '../../components/DialogueCard/DialogueCard';
+import { NewChatForm } from '../../components/NewChatForm/NewChatForm';
 
 export const Dialogues = () => {
   const [data, setData] = useState([]);
   const [selectedChat, setSelectedChat] = useState();
+  const [modalOpened, setModalOpened] = useState(false);
 
   useEffect(() => {
     axios.get(`http://${IPADDRESS}:${PORT}`)
@@ -35,7 +37,18 @@ export const Dialogues = () => {
 
     socket.on('message', newMessageHandler);
 
-    return () => socket.off('message', newMessageHandler);
+    function newChatHandler(newChat) {
+      setData((prevState) => (
+        [...prevState, newChat]
+      ));
+    }
+
+    socket.on('newChat', newChatHandler);
+
+    return () => {
+      socket.off('message', newMessageHandler);
+      socket.off('newChat', newChatHandler);
+    };
   }, []);
 
   return (
@@ -45,16 +58,20 @@ export const Dialogues = () => {
         <div className={classes.chatList}>
           <div className={classes.listHeader}>
             <span className={classes.heading}>Список чатов</span>
+            <button type="button" className={classes.createChat} onClick={() => setModalOpened(true)}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="#66B3D3" viewBox="0 0 48 48" width="30">
+                <path d="M21.65 38.85v-12.5H9.15v-4.7h12.5V9.15h4.7v12.5h12.5v4.7h-12.5v12.5Z" />
+              </svg>
+            </button>
           </div>
           <div className={classes.list}>
             {data.map((chat) => (
               <DialogueCard
                 key={chat.id}
-                name={chat.name ? chat.name : 'Chat'}
+                name={chat.name}
                 message={chat.messages.length > 0 && chat.messages[chat.messages.length - 1]}
                 setSelectedChat={() => {
                   setSelectedChat(chat.id);
-                  console.log(chat.id);
                 }}
               />
             ))}
@@ -64,12 +81,15 @@ export const Dialogues = () => {
           selectedChat >= 0
             ? <CurrentChat chat={data[selectedChat]} />
             : (
-              <div>
-                <span>No Chats</span>
+              <div className={classes.noChats}>
+                <span>Ты еще не открывал чаты</span>
               </div>
             )
         }
       </div>
+      {
+        modalOpened && <NewChatForm setModalOpened={setModalOpened} />
+      }
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 
 import Message from '../Message/Message';
 import classes from './CurrentChat.module.scss';
@@ -81,25 +80,4 @@ export const CurrentChat = ({ chat }) => {
       </form>
     </div>
   );
-};
-
-CurrentChat.propTypes = {
-  chat: PropTypes.shape({
-    messages: PropTypes.arrayOf({
-      message: PropTypes.shape({
-        sender: PropTypes.shape({
-          name: PropTypes.string,
-        }),
-        text: PropTypes.string,
-      }),
-    }),
-    id: PropTypes.number,
-  }),
-};
-
-CurrentChat.defaultProps = {
-  chat: {
-    messages: [],
-    id: 0,
-  },
 };

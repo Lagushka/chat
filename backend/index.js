@@ -15,6 +15,7 @@ const io = require('socket.io')(httpServer, {
 const chat = [
   {
     id: 0,
+    name: "Chat",
     messages: [],
     users: [],
   }
@@ -52,9 +53,22 @@ io.on('connection', (socket) => {
     });
     if (!alreadyLogged) {
       users.push(newUser);
-      chat[0].users.push(newUser);
+      chat.map(chatElement => {
+        chatElement.users.push(newUser);
+      })
     }
   });
+
+  socket.on('newChat', (newChat) => {
+    newChat = {
+      id: chat.length,
+      name: newChat.name,
+      messages: [],
+      users: [],
+    };
+    chat.push(newChat);
+    socket.emit('newChat', newChat);
+  })
 
   socket.on('disconnect', () => {
     console.log(`user ${socket.id} disconnected`);
