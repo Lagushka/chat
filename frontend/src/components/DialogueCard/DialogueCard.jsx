@@ -3,8 +3,14 @@ import React from 'react';
 
 import classes from './DialogueCard.module.scss';
 
-export const DialogueCard = ({ name, message }) => (
-  <button className={classes.card} type="button">
+export const DialogueCard = ({
+  name, message, setSelectedChat,
+}) => (
+  <button
+    className={classes.card}
+    type="button"
+    onClick={setSelectedChat}
+  >
     <div className={classes.chatInfo}>
       <span className={classes.chatName}>{name}</span>
       { message && <span className={classes.time}>{`${message.period.time.hour}:${message.period.time.minute}`}</span> }

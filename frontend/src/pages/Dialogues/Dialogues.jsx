@@ -52,13 +52,16 @@ export const Dialogues = () => {
                 key={chat.id}
                 name={chat.name ? chat.name : 'Chat'}
                 message={chat.messages.length > 0 && chat.messages[chat.messages.length - 1]}
-                setSelectedChat={() => setSelectedChat}
+                setSelectedChat={() => {
+                  setSelectedChat(chat.id);
+                  console.log(chat.id);
+                }}
               />
             ))}
           </div>
         </div>
         {
-          selectedChat
+          selectedChat >= 0
             ? <CurrentChat chat={data[selectedChat]} />
             : (
               <div>
