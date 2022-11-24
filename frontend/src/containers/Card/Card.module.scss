@@ -1,0 +1,16 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 60px;
+  width: 100%;
+  padding: 7px;
+  overflow: hidden;
+  background-color: inherit;
+  border: none;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #A8DEF4;
+  }
+}

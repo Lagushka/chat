@@ -48,28 +48,6 @@
                 }
             }
         }
-
-        .list {
-            background-color: inherit;
-            overflow-y: scroll;
-            height: calc(100% - 35px);
-
-            &::-webkit-scrollbar {
-                width: 7px;
-            }
-    
-            &::-webkit-scrollbar-track {
-                margin: 3px 0;
-                background-color: #256D8566;
-                border-radius: 5px;
-            }
-                
-            &::-webkit-scrollbar-thumb {
-                background-color: #256D85AA;
-                height: 100px;
-                border-radius: 5px;
-            }
-        }
     }
 
     .noChats {

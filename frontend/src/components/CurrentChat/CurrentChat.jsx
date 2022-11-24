@@ -4,6 +4,8 @@ import Message from '../Message/Message';
 import classes from './CurrentChat.module.scss';
 import sendImg from './send.svg';
 import { socket } from '../../socket';
+import { List } from '../../containers/List/List';
+import { Card } from '../../containers/Card/Card';
 
 export const CurrentChat = ({ chat }) => {
   const messagesRef = useRef(null);
@@ -13,6 +15,10 @@ export const CurrentChat = ({ chat }) => {
   useEffect(() => {
     messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
   }, [chat]);
+
+  useEffect(() => {
+    console.log(chat.users);
+  }, [chat.users]);
 
   const user = JSON.parse(localStorage.getItem('user'));
 
@@ -60,24 +66,43 @@ export const CurrentChat = ({ chat }) => {
 
   return (
     <div className={classes.currentChat}>
-      <div className={classes.messages} ref={messagesRef}>
-        {
-          chat.messages.map((message) => <Message key={message.id} message={message} />)
-        }
+      <div className={classes.messaging}>
+        <div className={classes.messages} ref={messagesRef}>
+          {
+            chat.messages.map((message) => <Message key={message.id} message={message} />)
+          }
+        </div>
+        <form className={classes.newMessageForm} onSubmit={handleSubmit}>
+          <textarea
+            name="text"
+            className={classes.messageInput}
+            placeholder="Write a message..."
+            cols="30"
+            rows="10"
+            value={fieldValue}
+            onChange={handleInput}
+            onKeyDown={handleKeyboardSubmit}
+          />
+          <input type="image" src={sendImg} alt="submit" width="35" className={classes.button} />
+        </form>
       </div>
-      <form className={classes.newMessageForm} onSubmit={handleSubmit}>
-        <textarea
-          name="text"
-          className={classes.messageInput}
-          placeholder="Write a message..."
-          cols="30"
-          rows="10"
-          value={fieldValue}
-          onChange={handleInput}
-          onKeyDown={handleKeyboardSubmit}
-        />
-        <input type="image" src={sendImg} alt="submit" width="35" className={classes.button} />
-      </form>
+      <div className={classes.usersList}>
+        <div className={classes.listHeader}>
+          <span className={classes.heading}>
+            Пользователи
+          </span>
+        </div>
+        <List>
+          {
+            chat.users.map((usersElement) => (
+              <Card key={usersElement.name}>
+                <span>{usersElement.name}</span>
+                <span>{usersElement.online ? 'online' : 'offline'}</span>
+              </Card>
+            ))
+          }
+        </List>
+      </div>
     </div>
   );
 };

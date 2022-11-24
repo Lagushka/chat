@@ -4,58 +4,90 @@
     background-color: var(--mainColor);
     height: 100%;
     width: 100%;
-    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(250px, 1fr) minmax(20%, 250px);
 
-    .messages {
-        padding: 0px 30px 50px 30px;
-        height: calc(100vh - 70px - 50px);
-        padding-bottom: 10px;
-        overflow-y: scroll;
+    .messaging {
+        height: 100%;
         width: 100%;
+        overflow: hidden;
 
-        &::-webkit-scrollbar {
-            width: 7px;
+        .messages {
+            padding: 0px 30px 50px 30px;
+            height: calc(100vh - 70px - 50px);
+            padding-bottom: 10px;
+            overflow-y: scroll;
+            width: 100%;
+
+            &::-webkit-scrollbar {
+                width: 7px;
+            }
+
+            &::-webkit-scrollbar-track {
+                margin: 3px 0;
+                background-color: #256D8566;
+                border-radius: 5px;
+            }
+                
+            &::-webkit-scrollbar-thumb {
+                background-color: #256D85AA;
+                height: 100px;
+                border-radius: 5px;
+            }
         }
 
-        &::-webkit-scrollbar-track {
-            margin: 3px 0;
-            background-color: #256D8566;
-            border-radius: 5px;
-        }
-            
-        &::-webkit-scrollbar-thumb {
-            background-color: #256D85AA;
-            height: 100px;
-            border-radius: 5px;
+        .newMessageForm {
+            background-color: var(--secondaryColor);
+            bottom: 0;
+            height: 50px;
+            bottom: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            .messageInput {
+                height: 100%;
+                width: 90%;
+                font-family: inherit;
+                resize: none;
+                background-color: inherit;
+                border: none;
+                outline: none;
+                color: var(--mainColor);
+                padding: 5px 10px 5px 10px;
+                line-height: 1.2em;
+                font-size: 13px;
+            }
+
+            .button {
+                margin-right: 10px;
+            }
         }
     }
 
-    .newMessageForm {
-        background-color: var(--secondaryColor);
-        bottom: 0;
-        height: 50px;
-        bottom: 0;
+    .usersList {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        background-color: #C6EFFF;
+        height: 100%;
+        overflow-y: hidden;
+        position: relative;
 
-        .messageInput {
-            height: 100%;
-            width: 90%;
-            font-family: inherit;
-            resize: none;
-            background-color: inherit;
-            border: none;
-            outline: none;
-            color: var(--mainColor);
-            padding: 5px 10px 5px 10px;
-            line-height: 1.2em;
-            font-size: 13px;
-        }
+        .listHeader {
+            border-bottom: 1px solid #A8DEF4;
+            width: 100%;
+            height: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
 
-        .button {
-            margin-right: 10px;
+            .heading {
+                font-weight: 500;
+                color: var(--secondaryColor);
+                margin-left: 50%;
+                transform: translateX(-50%);
+            }
         }
     }
 }

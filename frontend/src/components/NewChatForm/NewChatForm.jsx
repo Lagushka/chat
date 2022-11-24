@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { ModalWindow } from '../../containers/ModalWindow/ModalWindow';
 import { socket } from '../../socket';

@@ -1,16 +1,11 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { Card } from '../../containers/Card/Card';
 
 import classes from './DialogueCard.module.scss';
 
-export const DialogueCard = ({
-  name, message, setSelectedChat,
-}) => (
-  <button
-    className={classes.card}
-    type="button"
-    onClick={setSelectedChat}
-  >
+export const DialogueCard = ({ name, message, setSelectedChat }) => (
+  <Card onClickFunction={setSelectedChat}>
     <div className={classes.chatInfo}>
       <span className={classes.chatName}>{name}</span>
       { message && <span className={classes.time}>{`${message.period.time.hour}:${message.period.time.minute}`}</span> }
@@ -25,5 +20,5 @@ export const DialogueCard = ({
         )
         : <span>No messages</span>
     }
-  </button>
+  </Card>
 );

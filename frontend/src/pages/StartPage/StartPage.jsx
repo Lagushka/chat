@@ -25,6 +25,8 @@ export const StartPage = () => {
     if (fieldValue) {
       const user = {
         name: fieldValue,
+        socket: socket.id,
+        online: true,
       };
       localStorage.setItem('user', JSON.stringify(user));
       socket.emit('user', user);

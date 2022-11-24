@@ -1,51 +1,36 @@
-.card {
+
+
+.chatInfo {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 60px;
   width: 100%;
-  padding: 7px;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .time {
+    font-size: 14px;
+    color: #25358C;
+  }
+
+  .chatName {
+    font-weight: 700;
+  }
+}
+
+.lastMessage {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
   overflow: hidden;
-  background-color: inherit;
-  border: none;
-  font-size: 16px;
 
-  &:hover {
-    background-color: #A8DEF4;
+  .sender {
+    color: #25358C;
+    margin-right: 5px;
   }
 
-  .chatInfo {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-
-    .time {
-      font-size: 14px;
-      color: #25358C;
-    }
-
-    .chatName {
-      font-weight: 700;
-    }
-  }
-
-  .lastMessage {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+  .text {
     overflow: hidden;
-
-    .sender {
-      color: #25358C;
-      margin-right: 5px;
-    }
-
-    .text {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: left;
-      width: 100%;
-    }
+    text-overflow: ellipsis;
+    text-align: left;
+    width: 100%;
   }
 }

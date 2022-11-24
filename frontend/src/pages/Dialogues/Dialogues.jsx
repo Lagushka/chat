@@ -7,6 +7,7 @@ import classes from './Dialogues.module.scss';
 import Header from '../../components/Header/Header';
 import { DialogueCard } from '../../components/DialogueCard/DialogueCard';
 import { NewChatForm } from '../../components/NewChatForm/NewChatForm';
+import { List } from '../../containers/List/List';
 
 export const Dialogues = () => {
   const [data, setData] = useState([]);
@@ -37,17 +38,63 @@ export const Dialogues = () => {
 
     socket.on('message', newMessageHandler);
 
-    function newChatHandler(newChat) {
+    const newChatHandler = (newChat) => {
       setData((prevState) => (
         [...prevState, newChat]
       ));
-    }
+    };
 
     socket.on('newChat', newChatHandler);
+
+    const newUserHandler = (newUser) => {
+      setData((prevState) => (
+        prevState.map((chat) => (
+          {
+            ...chat,
+            users: chat.users ? [...chat.users, newUser] : [newUser],
+          }
+        ))
+      ));
+    };
+
+    socket.on('newUser', newUserHandler);
+
+    const userOnlineHandler = (requiredUser) => {
+      setData((prevState) => (
+        prevState.map((chat) => (
+          {
+            ...chat,
+            users: chat.users.map((user) => (
+              user.name === requiredUser.name ? { ...user, online: true } : { ...user }
+            )),
+          }
+        ))
+      ));
+    };
+
+    socket.on('userOnline', userOnlineHandler);
+
+    const userDisconnectHandler = (requiredUser) => {
+      setData((prevState) => (
+        prevState.map((chat) => (
+          {
+            ...chat,
+            users: chat.users.map((user) => (
+              user.name === requiredUser.name ? { ...user, online: false } : { ...user }
+            )),
+          }
+        ))
+      ));
+    };
+
+    socket.on('userDisconnected', userDisconnectHandler);
 
     return () => {
       socket.off('message', newMessageHandler);
       socket.off('newChat', newChatHandler);
+      socket.off('newUser', newUserHandler);
+      socket.off('userOnline', userOnlineHandler);
+      socket.off('userDisconnected', userDisconnectHandler);
     };
   }, []);
 
@@ -64,7 +111,7 @@ export const Dialogues = () => {
               </svg>
             </button>
           </div>
-          <div className={classes.list}>
+          <List>
             {data.map((chat) => (
               <DialogueCard
                 key={chat.id}
@@ -75,7 +122,7 @@ export const Dialogues = () => {
                 }}
               />
             ))}
-          </div>
+          </List>
         </div>
         {
           selectedChat >= 0

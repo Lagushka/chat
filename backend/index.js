@@ -12,7 +12,7 @@ const io = require('socket.io')(httpServer, {
   },
 });
 
-const chat = [
+const chats = [
   {
     id: 0,
     name: "Chat",
@@ -31,7 +31,7 @@ app.use(cors({
 
 app.get('/', (_, res) => {
   console.log('user connected!');	
-  res.json(chat);
+  res.json(chats);
 });
 
 io.on('connection', (socket) => {
@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
 
   socket.on('message', ({ message, chatId }) => {
     console.log('new message: %s', message);
-    chat[chatId].messages.push(message);
+    chats[chatId].messages.push(message);
     io.emit('message', { message: message, chatId: chatId });
   });
 
@@ -49,29 +49,42 @@ io.on('connection', (socket) => {
     users.map(user => {
       if (user.name === newUser.name) {
         alreadyLogged = true;
+        user.socket = socket.id;
+        user.online = true;
+        io.emit('userOnline', user);
       }
     });
     if (!alreadyLogged) {
       users.push(newUser);
-      chat.map(chatElement => {
+      chats.map(chatElement => {
         chatElement.users.push(newUser);
-      })
+      });
+      io.emit('newUser', newUser);
     }
   });
 
   socket.on('newChat', (newChat) => {
     newChat = {
-      id: chat.length,
+      id: chats.length,
       name: newChat.name,
       messages: [],
-      users: [],
+      users: users,
     };
-    chat.push(newChat);
+    chats.push(newChat);
     socket.emit('newChat', newChat);
   })
 
   socket.on('disconnect', () => {
     console.log(`user ${socket.id} disconnected`);
+    chats.map((chat) => {
+      chat.users.map((user) => {
+        if (user.socket === socket.id) {
+          user.online = false;
+          console.log('disc');
+          io.emit('userDisconnected', user);
+        }
+      })
+    });
   });
 });
 
