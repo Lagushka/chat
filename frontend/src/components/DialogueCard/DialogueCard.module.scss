@@ -3,9 +3,12 @@
   flex-direction: column;
   justify-content: space-between;
   height: 60px;
+  width: 100%;
   padding: 7px;
   overflow: hidden;
   background-color: inherit;
+  border: none;
+  font-size: 16px;
 
   &:hover {
     background-color: #A8DEF4;
@@ -13,6 +16,7 @@
 
   .chatInfo {
     display: flex;
+    width: 100%;
     flex-direction: row;
     justify-content: space-between;
 
@@ -22,17 +26,26 @@
     }
 
     .chatName {
-      font-weight: 500;
+      font-weight: 700;
     }
   }
 
   .lastMessage {
     display: flex;
     flex-direction: row;
+    width: 100%;
+    overflow: hidden;
 
     .sender {
       color: #25358C;
       margin-right: 5px;
+    }
+
+    .text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+      width: 100%;
     }
   }
 }

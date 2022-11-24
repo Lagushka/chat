@@ -1,21 +1,15 @@
 const express = require('express');
-const fs = require('fs');
-const https = require('https');
+const http = require('http');
 const cors = require('cors');
 
-const options = {
-  key: fs.readFileSync('./file.pem'),
-  cert: fs.readFileSync('./file.crt')
-};
-
 const app = express();
-const httpsServer = https.createServer(options, app);
-const io = require('socket.io')(httpsServer, {
+const httpServer = http.createServer(app);
+
+const io = require('socket.io')(httpServer, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
-  secure: true,
 });
 
 const chat = [
@@ -28,16 +22,14 @@ const chat = [
 
 const users = [];
 
-const corsOptions = {
+app.use(cors({
   origin: '*',
   credentials: true,
   optionSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
+}));
 
 app.get('/', (_, res) => {
-  console.log('connected to server');
+  console.log('user connected!');	
   res.json(chat);
 });
 
@@ -62,13 +54,13 @@ io.on('connection', (socket) => {
       users.push(newUser);
       chat[0].users.push(newUser);
     }
-  })
+  });
 
   socket.on('disconnect', () => {
     console.log(`user ${socket.id} disconnected`);
   });
 });
 
-httpsServer.listen(4001, () => {
+httpServer.listen(4001, () => {
   console.log('listening');
 });

@@ -11,6 +11,7 @@ body {
   .nameWindow {
     background-color: var(--secondaryColor);
     width: 600px;
+    height: 350px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,6 +30,13 @@ body {
           margin-top: 40px;
         }
 
+        .usernameInputBlock {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          height: 70px;
+        }
+
         .usernameInput {
           width: 20em;
           height: 1.5em;
@@ -39,6 +47,22 @@ body {
 
           &:focus {
             outline: none;
+          }
+        }
+
+        .wrongInput {
+          color: #FF4444;
+          font-size: 12px;
+          margin-top: 3px;
+          animation: appearance ease-in 4s;
+
+          @keyframes appearance {
+            from {
+              opacity: 1;
+            }
+            to {
+              opacity: 0;
+            }
           }
         }
 

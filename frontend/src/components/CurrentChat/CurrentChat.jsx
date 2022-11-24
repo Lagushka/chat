@@ -30,8 +30,8 @@ export const CurrentChat = ({ chat }) => {
           day: now.getDate(),
         },
         time: {
-          hour: now.getHours(),
-          minute: now.getMinutes(),
+          hour: `${now.getHours()}`.length === 1 ? `0${now.getHours()}` : now.getHours(),
+          minute: `${now.getMinutes()}`.length === 1 ? `0${now.getMinutes()}` : now.getMinutes(),
           second: now.getSeconds(),
         },
       };

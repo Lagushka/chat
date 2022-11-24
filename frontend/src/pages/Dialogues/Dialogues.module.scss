@@ -5,7 +5,8 @@
 .chats {
     height: calc(100vh - 70px);
     display: grid;
-    grid-template-columns: minmax(20%, 300px) auto;
+    width: 100vw;
+    grid-template-columns: minmax(20%, 300px) 1fr;
 
     .chatList {
         display: flex;

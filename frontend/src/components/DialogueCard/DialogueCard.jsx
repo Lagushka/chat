@@ -4,7 +4,7 @@ import React from 'react';
 import classes from './DialogueCard.module.scss';
 
 export const DialogueCard = ({ name, message }) => (
-  <div className={classes.card}>
+  <button className={classes.card} type="button">
     <div className={classes.chatInfo}>
       <span className={classes.chatName}>{name}</span>
       { message && <span className={classes.time}>{`${message.period.time.hour}:${message.period.time.minute}`}</span> }
@@ -19,5 +19,5 @@ export const DialogueCard = ({ name, message }) => (
         )
         : <span>No messages</span>
     }
-  </div>
+  </button>
 );

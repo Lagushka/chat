@@ -7,11 +7,11 @@ import { Dialogues } from './Dialogues/Dialogues';
 
 const routes = [
   {
-    path: '/chat',
+    path: '/',
     element: <StartPage />,
   },
   {
-    path: '/chat/dialogues',
+    path: '/dialogues',
     element: <Dialogues />,
   },
 ];

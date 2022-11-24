@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import { CurrentChat } from '../../components/CurrentChat/CurrentChat';
-import { socket, IPADDRESS } from '../../socket';
+import { socket, IPADDRESS, PORT } from '../../socket';
 import classes from './Dialogues.module.scss';
 import Header from '../../components/Header/Header';
 import { DialogueCard } from '../../components/DialogueCard/DialogueCard';
 
 export const Dialogues = () => {
   const [data, setData] = useState([]);
+  const [selectedChat, setSelectedChat] = useState();
 
   useEffect(() => {
-    axios.get(`${IPADDRESS}`)
+    axios.get(`http://${IPADDRESS}:${PORT}`)
       .then((response) => {
         setData([...response.data]);
       }).catch((error) => {
@@ -51,11 +52,20 @@ export const Dialogues = () => {
                 key={chat.id}
                 name={chat.name ? chat.name : 'Chat'}
                 message={chat.messages.length > 0 && chat.messages[chat.messages.length - 1]}
+                setSelectedChat={() => setSelectedChat}
               />
             ))}
           </div>
         </div>
-        <CurrentChat chat={data[0]} />
+        {
+          selectedChat
+            ? <CurrentChat chat={data[selectedChat]} />
+            : (
+              <div>
+                <span>No Chats</span>
+              </div>
+            )
+        }
       </div>
     </div>
   );
