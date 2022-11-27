@@ -22,18 +22,24 @@ export const Dialogues = () => {
         console.log(error);
       });
 
-    const newMessageHandler = (messageInfo) => {
-      setData((prevState) => (
-        prevState.map((chat, index) => (
-          index === messageInfo.chatId
-            ? {
-              ...chat,
-              messages: chat.messages
-                ? [...chat.messages, messageInfo.message] : [messageInfo.message],
-            }
-            : chat
-        ))
-      ));
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+
+    socket.emit('user', currentUser);
+
+    const newMessageHandler = ({ message, chatId }) => {
+      setData((prevState) => {
+        const dataToSort = [...prevState];
+        const chatToPushIndex = dataToSort.findIndex((chat) => (chat.id === chatId));
+        dataToSort[chatToPushIndex].messages = dataToSort[chatToPushIndex].messages.concat([message]);
+        console.log(chatToPushIndex);
+        for (let i = chatToPushIndex; i > 0; i -= 1) {
+          const buffer = dataToSort[i];
+          dataToSort[i] = dataToSort[i - 1];
+          dataToSort[i - 1] = buffer;
+        }
+
+        return dataToSort;
+      });
     };
 
     socket.on('message', newMessageHandler);
@@ -47,11 +53,12 @@ export const Dialogues = () => {
     socket.on('newChat', newChatHandler);
 
     const newUserHandler = (newUser) => {
+      console.log('someone new here');
       setData((prevState) => (
         prevState.map((chat) => (
           {
             ...chat,
-            users: chat.users ? [...chat.users, newUser] : [newUser],
+            users: chat.users.concat([newUser]),
           }
         ))
       ));
@@ -59,42 +66,26 @@ export const Dialogues = () => {
 
     socket.on('newUser', newUserHandler);
 
-    const userOnlineHandler = (requiredUser) => {
+    const userOnlineHandler = ({ requiredUser, online }) => {
       setData((prevState) => (
         prevState.map((chat) => (
           {
             ...chat,
             users: chat.users.map((user) => (
-              user.name === requiredUser.name ? { ...user, online: true } : { ...user }
+              user.name === requiredUser.name ? { ...user, online } : { ...user }
             )),
           }
         ))
       ));
     };
 
-    socket.on('userOnline', userOnlineHandler);
-
-    const userDisconnectHandler = (requiredUser) => {
-      setData((prevState) => (
-        prevState.map((chat) => (
-          {
-            ...chat,
-            users: chat.users.map((user) => (
-              user.name === requiredUser.name ? { ...user, online: false } : { ...user }
-            )),
-          }
-        ))
-      ));
-    };
-
-    socket.on('userDisconnected', userDisconnectHandler);
+    socket.on('userStatusChange', userOnlineHandler);
 
     return () => {
       socket.off('message', newMessageHandler);
       socket.off('newChat', newChatHandler);
       socket.off('newUser', newUserHandler);
       socket.off('userOnline', userOnlineHandler);
-      socket.off('userDisconnected', userDisconnectHandler);
     };
   }, []);
 
@@ -126,7 +117,7 @@ export const Dialogues = () => {
         </div>
         {
           selectedChat >= 0
-            ? <CurrentChat chat={data[selectedChat]} />
+            ? <CurrentChat chat={data.find((chat) => (selectedChat === chat.id))} />
             : (
               <div className={classes.noChats}>
                 <span>Ты еще не открывал чаты</span>

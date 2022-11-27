@@ -39,19 +39,24 @@ io.on('connection', (socket) => {
 
   socket.on('message', ({ message, chatId }) => {
     console.log('new message: %s', message);
-    chats[chatId].messages.push(message);
-    io.emit('message', { message: message, chatId: chatId });
+    const chatToPushIndex = chats.findIndex((chat) => (chat.id === chatId));
+    chats[chatToPushIndex].messages.push(message);
+    for (let i = chatToPushIndex; i > 0; i--) {
+      const buffer = chats[i];
+      chats[i] = chats[i-1];
+      chats[i-1] = buffer;
+    }
+    io.emit('message', { message: message, chatId });
   });
 
   socket.on('user', (newUser) => {
-    io.emit('user', newUser);
     let alreadyLogged = false;
-    users.map(user => {
+    users.forEach(user => {
       if (user.name === newUser.name) {
         alreadyLogged = true;
         user.socket = socket.id;
         user.online = true;
-        io.emit('userOnline', user);
+        io.emit('userStatusChange', { requiredUser: user, online: true });
       }
     });
     if (!alreadyLogged) {
@@ -71,17 +76,17 @@ io.on('connection', (socket) => {
       users: users,
     };
     chats.push(newChat);
-    socket.emit('newChat', newChat);
+    io.emit('newChat', newChat);
   })
 
   socket.on('disconnect', () => {
     console.log(`user ${socket.id} disconnected`);
-    chats.map((chat) => {
-      chat.users.map((user) => {
+    chats.forEach((chat) => {
+      chat.users.forEach((user) => {
         if (user.socket === socket.id) {
           user.online = false;
           console.log('disc');
-          io.emit('userDisconnected', user);
+          io.emit('userStatusChange', { requiredUser: user, online: false });
         }
       })
     });

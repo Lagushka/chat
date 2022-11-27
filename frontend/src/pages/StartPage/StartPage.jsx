@@ -29,7 +29,7 @@ export const StartPage = () => {
         online: true,
       };
       localStorage.setItem('user', JSON.stringify(user));
-      socket.emit('user', user);
+      // socket.emit('user', user);
       navigate('/dialogues');
     }
   };

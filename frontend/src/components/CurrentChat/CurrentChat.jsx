@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import classNames from 'classnames';
 
 import Message from '../Message/Message';
 import classes from './CurrentChat.module.scss';
@@ -29,6 +30,7 @@ export const CurrentChat = ({ chat }) => {
     if (fieldValue) {
       const now = new Date();
       const period = {
+        whole: now,
         date: {
           year: now.getFullYear(),
           month: now.getMonth(),
@@ -94,10 +96,19 @@ export const CurrentChat = ({ chat }) => {
         </div>
         <List>
           {
-            chat.users.map((usersElement) => (
+            chat.users && chat.users.map((usersElement) => (
               <Card key={usersElement.name}>
-                <span>{usersElement.name}</span>
-                <span>{usersElement.online ? 'online' : 'offline'}</span>
+                <div className={classes.theOnlyRow}>
+                  <span className={classes.name}>{usersElement.name}</span>
+                  <span
+                    className={classNames(classes.status, {
+                      [classes.online]: usersElement.online,
+                      [classes.offline]: !usersElement.online,
+                    })}
+                  >
+                    {usersElement.online ? 'онлайн' : 'вышел'}
+                  </span>
+                </div>
               </Card>
             ))
           }

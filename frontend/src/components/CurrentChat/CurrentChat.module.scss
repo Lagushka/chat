@@ -89,5 +89,39 @@
                 transform: translateX(-50%);
             }
         }
+
+        .theOnlyRow {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+
+            .name {
+                width: 70%;
+                text-align: left;
+                padding-right: 7px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .status {
+                font-weight: 400;
+                font-size: 0.9em;
+            }
+
+            .online {
+                color: #1DB100;
+                
+                &::before {
+                    content: "●";
+                    margin-right: 3px;
+                }
+            }
+
+            .offline {
+                color: #B10000;
+            }
+        }
     }
 }
