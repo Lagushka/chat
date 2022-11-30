@@ -17,7 +17,7 @@ export const Dialogues = () => {
   useEffect(() => {
     axios.get(`http://${IPADDRESS}:${PORT}`)
       .then((response) => {
-        setData([...response.data]);
+        setData(response.data);
       }).catch((error) => {
         console.log(error);
       });
@@ -27,12 +27,10 @@ export const Dialogues = () => {
     socket.emit('user', currentUser);
 
     const newMessageHandler = ({ message, chatId }) => {
-      console.log('received');
       setData((prevState) => {
         const dataToSort = [...prevState];
         const chatToPushIndex = dataToSort.findIndex((chat) => (chat.id === chatId));
-        dataToSort[chatToPushIndex].messages = dataToSort[chatToPushIndex].messages.concat([message]);
-        console.log(dataToSort[chatToPushIndex].messages);
+        dataToSort[chatToPushIndex].lastMessage = { ...message };
         for (let i = chatToPushIndex; i > 0; i -= 1) {
           const buffer = dataToSort[i];
           dataToSort[i] = dataToSort[i - 1];
@@ -77,7 +75,7 @@ export const Dialogues = () => {
               <DialogueCard
                 key={chat.id}
                 name={chat.name}
-                message={chat.messages.length > 0 && chat.messages[chat.messages.length - 1]}
+                message={chat.lastMessage}
                 setSelectedChat={() => {
                   setSelectedChat(chat.id);
                 }}

@@ -17,16 +17,7 @@ export const CurrentChat = ({ chatId }) => {
   const [chat, setChat] = useState({});
 
   useEffect(() => {
-    axios.get(`http://${IPADDRESS}:${PORT}/${chatId}`)
-      .then((response) => {
-        setChat({ ...response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
     const newMessageHandler = ({ message }) => {
-      console.log('received to chat');
       setChat((prevState) => (
         {
           ...prevState,
@@ -38,7 +29,6 @@ export const CurrentChat = ({ chatId }) => {
     socket.on('message', newMessageHandler);
 
     const newUserHandler = (newUser) => {
-      console.log('someone new here');
       setChat((prevState) => (
         {
           ...prevState,
@@ -74,7 +64,14 @@ export const CurrentChat = ({ chatId }) => {
   }, [chat.messages]);
 
   useEffect(() => {
-  }, [chat.users]);
+    axios.get(`http://${IPADDRESS}:${PORT}/${chatId}`)
+      .then((response) => {
+        setChat({ ...response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [chatId]);
 
   const user = JSON.parse(localStorage.getItem('user'));
 
@@ -107,7 +104,6 @@ export const CurrentChat = ({ chatId }) => {
         };
         newMessage.message.text = fieldValue.slice(i * 1000, i * 1000 + 1000 < fieldValue.length
           ? i * 1000 + 1000 : fieldValue.length);
-        console.log(chat);
         socket.emit('message', newMessage);
       }
       setFieldValue('');

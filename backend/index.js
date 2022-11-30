@@ -30,8 +30,15 @@ app.use(cors({
 }));
 
 app.get('/', (_, res) => {
-  console.log('user connected!');	
-  res.json(chats);
+  console.log('user connected!');
+  const simplifiedChats = chats.map((chat) => (
+    {
+      name: chat.name,
+      lastMessage: chat.messages && chat.messages[chat.messages.length-1],
+      id: chat.id,
+    }
+  ));
+  res.json(simplifiedChats);
 });
 
 app.get('/:id', (req, res) => {
@@ -86,7 +93,10 @@ io.on('connection', (socket) => {
       users: users,
     };
     chats.push(newChat);
-    io.emit('newChat', newChat);
+    io.emit('newChat', {
+      id: newChat.id,
+      name: newChat.name,
+    });
   })
 
   socket.on('disconnect', () => {
