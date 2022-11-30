@@ -6,6 +6,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: minmax(250px, 1fr) minmax(20%, 250px);
+    overflow: hidden;
 
     .messaging {
         height: 100%;
@@ -98,7 +99,7 @@
             width: 100%;
 
             .name {
-                width: 70%;
+                width: 100%;
                 text-align: left;
                 padding-right: 7px;
                 overflow: hidden;
@@ -108,6 +109,8 @@
             .status {
                 font-weight: 400;
                 font-size: 0.9em;
+                text-align: right;
+                width: fit-content;
             }
 
             .online {

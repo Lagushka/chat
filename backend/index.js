@@ -34,19 +34,29 @@ app.get('/', (_, res) => {
   res.json(chats);
 });
 
+app.get('/:id', (req, res) => {
+  console.log('chats requested');
+  const chatIndex = chats.findIndex((chat) => (chat.id == req.params.id));
+  res.json(chats[chatIndex]);
+});
+
 io.on('connection', (socket) => {
   console.log('connected user %s', socket.id);
 
   socket.on('message', ({ message, chatId }) => {
-    console.log('new message: %s', message);
+    console.log(chatId);
     const chatToPushIndex = chats.findIndex((chat) => (chat.id === chatId));
+    message.id = chats[chatToPushIndex].messages.length;
     chats[chatToPushIndex].messages.push(message);
     for (let i = chatToPushIndex; i > 0; i--) {
       const buffer = chats[i];
       chats[i] = chats[i-1];
       chats[i-1] = buffer;
     }
-    io.emit('message', { message: message, chatId });
+    console.log('new message: %s', message.id);
+    chats[chatToPushIndex].users.forEach((user) => {
+      io.to(user.socket).emit('message', { message: message, chatId });
+    });
   });
 
   socket.on('user', (newUser) => {

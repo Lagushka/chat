@@ -27,11 +27,12 @@ export const Dialogues = () => {
     socket.emit('user', currentUser);
 
     const newMessageHandler = ({ message, chatId }) => {
+      console.log('received');
       setData((prevState) => {
         const dataToSort = [...prevState];
         const chatToPushIndex = dataToSort.findIndex((chat) => (chat.id === chatId));
         dataToSort[chatToPushIndex].messages = dataToSort[chatToPushIndex].messages.concat([message]);
-        console.log(chatToPushIndex);
+        console.log(dataToSort[chatToPushIndex].messages);
         for (let i = chatToPushIndex; i > 0; i -= 1) {
           const buffer = dataToSort[i];
           dataToSort[i] = dataToSort[i - 1];
@@ -52,40 +53,9 @@ export const Dialogues = () => {
 
     socket.on('newChat', newChatHandler);
 
-    const newUserHandler = (newUser) => {
-      console.log('someone new here');
-      setData((prevState) => (
-        prevState.map((chat) => (
-          {
-            ...chat,
-            users: chat.users.concat([newUser]),
-          }
-        ))
-      ));
-    };
-
-    socket.on('newUser', newUserHandler);
-
-    const userOnlineHandler = ({ requiredUser, online }) => {
-      setData((prevState) => (
-        prevState.map((chat) => (
-          {
-            ...chat,
-            users: chat.users.map((user) => (
-              user.name === requiredUser.name ? { ...user, online } : { ...user }
-            )),
-          }
-        ))
-      ));
-    };
-
-    socket.on('userStatusChange', userOnlineHandler);
-
     return () => {
       socket.off('message', newMessageHandler);
       socket.off('newChat', newChatHandler);
-      socket.off('newUser', newUserHandler);
-      socket.off('userOnline', userOnlineHandler);
     };
   }, []);
 
@@ -117,7 +87,7 @@ export const Dialogues = () => {
         </div>
         {
           selectedChat >= 0
-            ? <CurrentChat chat={data.find((chat) => (selectedChat === chat.id))} />
+            ? <CurrentChat chatId={selectedChat} />
             : (
               <div className={classes.noChats}>
                 <span>Ты еще не открывал чаты</span>

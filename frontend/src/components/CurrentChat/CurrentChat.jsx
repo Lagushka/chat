@@ -1,24 +1,79 @@
 import React, { useEffect, useState, useRef } from 'react';
 import classNames from 'classnames';
+import axios from 'axios';
 
 import Message from '../Message/Message';
 import classes from './CurrentChat.module.scss';
 import sendImg from './send.svg';
-import { socket } from '../../socket';
+import { IPADDRESS, PORT, socket } from '../../socket';
 import { List } from '../../containers/List/List';
 import { Card } from '../../containers/Card/Card';
 
-export const CurrentChat = ({ chat }) => {
+export const CurrentChat = ({ chatId }) => {
   const messagesRef = useRef(null);
 
   const [fieldValue, setFieldValue] = useState('');
 
-  useEffect(() => {
-    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-  }, [chat]);
+  const [chat, setChat] = useState({});
 
   useEffect(() => {
-    console.log(chat.users);
+    axios.get(`http://${IPADDRESS}:${PORT}/${chatId}`)
+      .then((response) => {
+        setChat({ ...response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    const newMessageHandler = ({ message }) => {
+      console.log('received to chat');
+      setChat((prevState) => (
+        {
+          ...prevState,
+          messages: [...prevState.messages, message],
+        }
+      ));
+    };
+
+    socket.on('message', newMessageHandler);
+
+    const newUserHandler = (newUser) => {
+      console.log('someone new here');
+      setChat((prevState) => (
+        {
+          ...prevState,
+          users: prevState.users.concat([newUser]),
+        }
+      ));
+    };
+
+    socket.on('newUser', newUserHandler);
+
+    const userOnlineHandler = ({ requiredUser, online }) => {
+      setChat((prevState) => (
+        {
+          ...prevState,
+          users: prevState.users.map((user) => (
+            user.name === requiredUser.name ? { ...user, online } : { ...user }
+          )),
+        }
+      ));
+    };
+
+    socket.on('userStatusChange', userOnlineHandler);
+
+    return () => {
+      socket.off('message', newMessageHandler);
+      socket.off('newUser', newUserHandler);
+      socket.off('userStatusChange', userOnlineHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+  }, [chat.messages]);
+
+  useEffect(() => {
   }, [chat.users]);
 
   const user = JSON.parse(localStorage.getItem('user'));
@@ -28,29 +83,33 @@ export const CurrentChat = ({ chat }) => {
       event.preventDefault();
     }
     if (fieldValue) {
-      const now = new Date();
-      const period = {
-        whole: now,
-        date: {
-          year: now.getFullYear(),
-          month: now.getMonth(),
-          day: now.getDate(),
-        },
-        time: {
-          hour: `${now.getHours()}`.length === 1 ? `0${now.getHours()}` : now.getHours(),
-          minute: `${now.getMinutes()}`.length === 1 ? `0${now.getMinutes()}` : now.getMinutes(),
-          second: now.getSeconds(),
-        },
-      };
-      socket.emit('message', {
-        message: {
-          id: chat.messages.length,
-          text: fieldValue,
-          sender: user,
-          period,
-        },
-        chatId: chat.id,
-      });
+      for (let i = 0; i < Math.floor(fieldValue.length / 1000) + 1; i += 1) {
+        const now = new Date();
+        const period = {
+          whole: now,
+          date: {
+            year: now.getFullYear(),
+            month: now.getMonth(),
+            day: now.getDate(),
+          },
+          time: {
+            hour: `${now.getHours()}`.length === 1 ? `0${now.getHours()}` : now.getHours(),
+            minute: `${now.getMinutes()}`.length === 1 ? `0${now.getMinutes()}` : now.getMinutes(),
+            second: now.getSeconds(),
+          },
+        };
+        const newMessage = {
+          message: {
+            sender: user,
+            period,
+          },
+          chatId: chat.id,
+        };
+        newMessage.message.text = fieldValue.slice(i * 1000, i * 1000 + 1000 < fieldValue.length
+          ? i * 1000 + 1000 : fieldValue.length);
+        console.log(chat);
+        socket.emit('message', newMessage);
+      }
       setFieldValue('');
     }
   };
@@ -71,7 +130,9 @@ export const CurrentChat = ({ chat }) => {
       <div className={classes.messaging}>
         <div className={classes.messages} ref={messagesRef}>
           {
-            chat.messages.map((message) => <Message key={message.id} message={message} />)
+            chat.messages
+              ? chat.messages.map((message) => (<Message key={message.id} message={message} />))
+              : <span>Here are no messages yet</span>
           }
         </div>
         <form className={classes.newMessageForm} onSubmit={handleSubmit}>
