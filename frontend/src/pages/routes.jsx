@@ -13,6 +13,12 @@ const routes = [
   {
     path: '/dialogues',
     element: <Dialogues />,
+    children: [
+      {
+        path: '/dialogues/:id',
+        element: <Dialogues />,
+      },
+    ],
   },
 ];
 

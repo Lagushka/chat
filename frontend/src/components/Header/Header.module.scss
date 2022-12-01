@@ -2,13 +2,30 @@
     display: flex;
     flex-direction: row;
     height: 70px;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     background-color: var(--secondaryColor);
     width: 100vw;
   
     .projectName {
+      margin-left: 50%;
       color: var(--mainColor);
       font-size: 25px;
+      transform: translateX(-50%);
+    }
+
+    .logOut {
+      width: fit-content;
+      height: fit-content;
+      margin-right: 20px;
+
+      button {
+        width: fit-content;
+        height: fit-content;
+        padding: 0;
+        background-color: inherit;
+        border: none;
+        cursor: pointer;
+      }
     }
 }

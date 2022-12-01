@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 import { CurrentChat } from '../../components/CurrentChat/CurrentChat';
 import { socket, IPADDRESS, PORT } from '../../socket';
@@ -11,8 +12,9 @@ import { List } from '../../containers/List/List';
 
 export const Dialogues = () => {
   const [data, setData] = useState([]);
-  const [selectedChat, setSelectedChat] = useState();
   const [modalOpened, setModalOpened] = useState(false);
+
+  const selectedChat = useParams().id;
 
   useEffect(() => {
     axios.get(`http://${IPADDRESS}:${PORT}`)
@@ -76,9 +78,7 @@ export const Dialogues = () => {
                 key={chat.id}
                 name={chat.name}
                 message={chat.lastMessage}
-                setSelectedChat={() => {
-                  setSelectedChat(chat.id);
-                }}
+                chatId={chat.id}
               />
             ))}
           </List>
