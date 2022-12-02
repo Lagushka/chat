@@ -76,7 +76,6 @@ export const CurrentChat = ({ chatId }) => {
   const user = JSON.parse(localStorage.getItem('user'));
 
   const handleSubmit = (event) => {
-    console.log(chat.id);
     if (event) {
       event.preventDefault();
     }

@@ -20,7 +20,6 @@ export const Dialogues = () => {
     axios.get(`http://${IPADDRESS}:${PORT}`)
       .then((response) => {
         setData(response.data);
-        console.log(localStorage.getItem('user'));
       }).catch((error) => {
         console.log(error);
       });
@@ -54,7 +53,6 @@ export const Dialogues = () => {
 
     const userInfoHandler = (newUser) => {
       localStorage.setItem('user', JSON.stringify(newUser));
-      console.log(newUser);
     };
 
     socket.on('userInfo', userInfoHandler);
