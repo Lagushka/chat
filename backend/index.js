@@ -77,11 +77,14 @@ io.on('connection', (socket) => {
       }
     });
     if (!alreadyLogged) {
+      newUser.id = users.length;
       users.push(newUser);
       chats.map(chatElement => {
         chatElement.users.push(newUser);
       });
+      console.log(users);
       io.emit('newUser', newUser);
+      socket.emit('userInfo', newUser);
     }
   });
 

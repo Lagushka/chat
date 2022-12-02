@@ -20,13 +20,12 @@ export const Dialogues = () => {
     axios.get(`http://${IPADDRESS}:${PORT}`)
       .then((response) => {
         setData(response.data);
+        console.log(localStorage.getItem('user'));
       }).catch((error) => {
         console.log(error);
       });
 
-    const currentUser = JSON.parse(localStorage.getItem('user'));
-
-    socket.emit('user', currentUser);
+    socket.emit('user', JSON.parse(localStorage.getItem('user')));
 
     const newMessageHandler = ({ message, chatId }) => {
       setData((prevState) => {
@@ -52,6 +51,13 @@ export const Dialogues = () => {
     };
 
     socket.on('newChat', newChatHandler);
+
+    const userInfoHandler = (newUser) => {
+      localStorage.setItem('user', JSON.stringify(newUser));
+      console.log(newUser);
+    };
+
+    socket.on('userInfo', userInfoHandler);
 
     return () => {
       socket.off('message', newMessageHandler);

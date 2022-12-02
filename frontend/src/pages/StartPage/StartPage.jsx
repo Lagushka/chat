@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classes from './StartPage.module.scss';
 import { socket } from '../../socket';
+import avatar from '../../static/patrick.jpg';
 
 export const StartPage = () => {
   const [fieldValue, setFieldValue] = useState('');
@@ -23,10 +24,12 @@ export const StartPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (fieldValue) {
+      console.log(avatar);
       const user = {
         name: fieldValue,
         socket: socket.id,
         online: true,
+        img: avatar,
       };
       localStorage.setItem('user', JSON.stringify(user));
       navigate('/dialogues');

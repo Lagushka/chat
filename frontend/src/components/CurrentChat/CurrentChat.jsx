@@ -76,6 +76,7 @@ export const CurrentChat = ({ chatId }) => {
   const user = JSON.parse(localStorage.getItem('user'));
 
   const handleSubmit = (event) => {
+    console.log(chat.id);
     if (event) {
       event.preventDefault();
     }
@@ -127,7 +128,17 @@ export const CurrentChat = ({ chatId }) => {
         <div className={classes.messages} ref={messagesRef}>
           {
             chat.messages
-              ? chat.messages.map((message) => (<Message key={message.id} message={message} />))
+              ? chat.messages.map((message, index) => (
+                <div className={classes.message} key={message.id}>
+                  <div className={classes.imgWrapper}>
+                    {
+                      (index === chat.messages.length - 1 || chat.messages[index + 1].sender.id !== chat.messages[index].sender.id)
+                      && <img className={classes.avatar} src={message.sender.img} alt="" width="40" height="40" />
+                    }
+                  </div>
+                  <Message message={message} />
+                </div>
+              ))
               : <span>Here are no messages yet</span>
           }
         </div>
@@ -156,6 +167,9 @@ export const CurrentChat = ({ chatId }) => {
             chat.users && chat.users.map((usersElement) => (
               <Card key={usersElement.name}>
                 <div className={classes.theOnlyRow}>
+                  <div className={classes.imgWrapper}>
+                    <img className={classes.avatar} src={usersElement.img} alt="" width="40" height="40" />
+                  </div>
                   <span className={classes.name}>{usersElement.name}</span>
                   <span
                     className={classNames(classes.status, {
